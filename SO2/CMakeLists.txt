@@ -8,6 +8,8 @@ INCLUDE_DIRECTORIES("include")
 ADD_EXECUTABLE(SO2
 			   src/main.cpp
 			   src/problem/philosopher/Launcher.cpp
+			   src/problem/philosopher/Storage.cpp
+			   src/problem/philosopher/Philosopher.cpp
 			   )
 
 FIND_PACKAGE(Curses REQUIRED)
