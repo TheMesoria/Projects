@@ -1,6 +1,9 @@
 #include <iostream>
+#include <Launcher.hpp>
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+	Launcher launcher;
+	launcher.Start();
+	std::cout<<"Exit\n";
+	return EXIT_SUCCESS;
 }

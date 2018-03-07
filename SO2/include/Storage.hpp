@@ -1,12 +1,21 @@
 #ifndef SO2_STORAGE_HPP
 #define SO2_STORAGE_HPP
 
-/// @brief It stores all shared data in program
+#include <vector>
+
+/// @brief It stores all shared data in program.
 class Storage
 {
 public:
-	/// @brief Represents a fork used by philosophers
-	struct Fork{bool Avaiable=true;};
+	struct Fork{bool Avaiable=true;}; ///< @brief Represents a fork used by philosophers
+private:
+	/// @brief Represents the fork collection. <br />
+	/// First fork is presented to the left side of n-th philosopher,
+	/// and to the 1-st  philosophers right.
+	std::vector<Fork> forkVector_;
+public:
+	explicit Storage(unsigned amount=5);
+	Fork* getKey(unsigned id);
 };
 
 #endif //SO2_STORAGE_HPP

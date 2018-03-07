@@ -10,6 +10,7 @@ ADD_EXECUTABLE(SO2
 			   src/problem/philosopher/Launcher.cpp
 			   src/problem/philosopher/Storage.cpp
 			   src/problem/philosopher/Philosopher.cpp
+			   src/problem/philosopher/Controller.cpp
 			   )
 
 FIND_PACKAGE(Curses REQUIRED)
