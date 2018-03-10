@@ -16,7 +16,11 @@ public:
 	OutputController()=default;
 	
 public:
-	inline void print(std::string const&message);
+	inline void print(std::string const&message)
+	{
+		std::lock_guard lockGuard(inflowBufferQueueMutex_);
+		inflowBufferQueue_.push(message);
+	}
 };
 
 

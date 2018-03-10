@@ -14,7 +14,7 @@ class Launcher
 	std::shared_ptr<Storage> storagePtr_;
 	std::shared_ptr<OutputController> outputController_;
 	
-	unsigned long amountOfPhilosophers_;
+	unsigned long amountOfPhilosophers_=5;
 	
 private:
 	void load(ArgumentReader ar);

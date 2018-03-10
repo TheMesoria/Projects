@@ -11,7 +11,6 @@ ADD_EXECUTABLE(SO2
 			   src/problem/philosopher/Storage.cpp
 			   src/problem/philosopher/Philosopher.cpp
 			   src/input/arg/ArgumentReader.cpp
-			   src/problem/philosopher/output/OutputController.cpp
 			   src/problem/philosopher/output/FileOutput.cpp
 			   include/Launcher.hpp
 			   include/Storage.hpp
