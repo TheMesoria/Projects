@@ -10,9 +10,15 @@ ADD_EXECUTABLE(SO2
 			   src/problem/philosopher/Launcher.cpp
 			   src/problem/philosopher/Storage.cpp
 			   src/problem/philosopher/Philosopher.cpp
+			   src/input/arg/ArgumentReader.cpp
+			   src/problem/philosopher/output/OutputController.cpp
+			   src/problem/philosopher/output/FileOutput.cpp
 			   include/Launcher.hpp
 			   include/Storage.hpp
 			   include/Philosopher.hpp
+			   include/OutputController.hpp
+			   include/FileOutput.hpp
+			   include/ArgumentReader.hpp
 			   )
 
 FIND_PACKAGE(Curses REQUIRED)

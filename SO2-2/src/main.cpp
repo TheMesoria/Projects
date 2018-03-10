@@ -1,6 +1,6 @@
-#define EXIT_SUCCESS 0;
+#include <cstdlib>
 
-int main()
+int main(int argc,char **args)
 {
 	return EXIT_SUCCESS;
 }

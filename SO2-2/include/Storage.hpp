@@ -1,6 +1,7 @@
 #pragma once
 
 #include <queue>
+#include <memory>
 
 class Philosopher;
 
@@ -8,16 +9,13 @@ struct Fork{
 	bool Available=true;
 };
 
-struct Wish{
-	Philosopher* Philosopher;
-	unsigned LeftFork;
-	unsigned RightFork;
-};
-
 class Storage
 {
-	std::queue<Wish> wishQueue;
-	std::vector<Philosopher>
+	std::vector<std::shared_ptr<Philosopher>> philosopherPtrVector_;
+	std::vector<Fork> forkVector;
+	
+public:
+	explicit Storage(unsigned long amount=5);
 };
 
 
