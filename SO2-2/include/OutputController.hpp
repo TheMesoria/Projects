@@ -12,7 +12,7 @@ protected:
 public:
 	virtual void update()=0;
 	
-	~OutputController()=default;
+	virtual ~OutputController()=default;
 	OutputController()=default;
 	
 public:
@@ -20,6 +20,11 @@ public:
 	{
 		std::lock_guard lockGuard(inflowBufferQueueMutex_);
 		inflowBufferQueue_.push(message);
+	}
+	inline void printQ(std::string const&message)
+	{
+		print(message);
+		update();
 	}
 };
 

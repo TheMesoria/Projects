@@ -1,14 +1,21 @@
 #include "FileOutput.hpp"
 
+#include <utility>
+
 FileOutput::FileOutput(std::string path)
 {
-	path_=path;
+	std::fstream file(path,std::ios::out | std::ios::trunc);
+	path_=std::move(path);
+}
+FileOutput::~FileOutput()
+{
+	update();
 }
 
 void FileOutput::update()
 {
 	std::lock_guard lockGuard(inflowBufferQueueMutex_);
-	std::fstream file(path_, std::ios::out | std::ios::ate);
+	std::fstream file(path_, std::ios::app | std::ios::out);
 	
 	while(not inflowBufferQueue_.empty())
 	{

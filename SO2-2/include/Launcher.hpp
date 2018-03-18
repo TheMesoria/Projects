@@ -12,7 +12,7 @@
 class Launcher
 {
 	std::shared_ptr<Storage> storagePtr_;
-	std::shared_ptr<OutputController> outputController_;
+	static std::shared_ptr<OutputController> outputController;
 	
 	unsigned long amountOfPhilosophers_=5;
 	
@@ -21,6 +21,7 @@ private:
 public:
 	void start();
 	
+	static const std::shared_ptr<OutputController> &Logger();
 	
 	~Launcher()=default;
 	explicit Launcher(int argc, char *args[]);
