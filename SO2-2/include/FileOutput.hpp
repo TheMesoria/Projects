@@ -11,7 +11,7 @@ public:
 	void update() override;
 	
 	explicit FileOutput(std::string path="run.log");
-	~FileOutput();
+	~FileOutput() final;
 };
 
 

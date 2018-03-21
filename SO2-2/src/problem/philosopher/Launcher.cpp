@@ -13,17 +13,14 @@ Launcher::Launcher(int argc,char **args)
 
 void Launcher::start()
 {
-	outputController->print("READY.");
-	outputController->update();
-	
-	auto tmp = storagePtr_->philosopherPtrVector_.at(0).get();
-	std::thread runner(std::bind(&Philosopher::run,tmp));
-	storagePtr_->scanSubscriptionList();
-	
-	std::this_thread::sleep_for(std::chrono::milliseconds(400));
-	tmp->end_=true;
-	
-	runner.join();
+	outputController->printQ("READY.");
+	outputController->printQ("Preparing threads.");
+	prepareThreads();
+	outputController->printQ("300 milliseconds wait...");
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+	outputController->printQ("Joining them...");
+	collectThreads();
+	outputController->printQ("All done!");
 }
 
 void Launcher::load(ArgumentReader ar)
@@ -43,4 +40,18 @@ void Launcher::load(ArgumentReader ar)
 const std::shared_ptr<OutputController> &Launcher::Logger()
 {
 	return outputController;
+}
+
+void Launcher::prepareThreads()
+{
+	for(auto philosopher:storagePtr_->philosopherPtrVector_)
+		activeThreadVector_.emplace_back(std::bind(&Philosopher::run,philosopher));
+	activeThreadVector_.emplace_back(std::bind(&Storage::runner,storagePtr_));
+}
+
+void Launcher::collectThreads()
+{
+	storagePtr_->setEnd(true);
+	for(auto&& thread:activeThreadVector_)
+		thread.join();
 }

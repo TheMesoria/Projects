@@ -3,6 +3,7 @@
 #include <list>
 #include <memory>
 #include <functional>
+#include <vector>
 #include <mutex>
 
 class Launcher;
@@ -19,17 +20,26 @@ using SubscriptionList=std::list<
 class Storage
 {
 	std::mutex forkVectorMutex_;
+	std::mutex subscriptionVectorMutex_;
 	std::vector<std::shared_ptr<Philosopher>> philosopherPtrVector_;
 	std::vector<Fork> forkVector;
 	
-	 SubscriptionList subscriptionList_;
+	SubscriptionList subscriptionList_;
+	bool end_=false;
+public:
+	void setEnd(bool anEnd);
+
+public:
+	bool getEnd() const;
+
 public:
 	explicit Storage(unsigned long amount=5);
 	
 	void subscribe(std::function<void()> trigger,
 				   std::pair<unsigned,unsigned> forksPair
 				  );
-	void returnForks(std::pair<unsigned,unsigned> forksPair);
+	void returnForks(std::pair<unsigned,unsigned> forkPair);
+	void runner();
 private:
 	bool scanSubscriptionList();
 	

@@ -11,7 +11,6 @@ class Philosopher
 	static unsigned idCounter;
 	unsigned id_;
 	
-	bool end_;
 	bool forksReady_;
 	std::condition_variable conditionVariable_;
 	std::mutex philosopherMutex_;

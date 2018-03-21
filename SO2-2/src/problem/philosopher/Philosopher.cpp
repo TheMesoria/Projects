@@ -8,7 +8,6 @@ Philosopher::Philosopher(const std::chrono::milliseconds &eatDuration,Storage *s
 		eatDuration_(eatDuration),
 		storage_(storage),
 		id_(++idCounter),
-		end_(false),
 		forksReady_(false)
 {}
 
@@ -16,11 +15,18 @@ void Philosopher::execute()
 {
 	unsigned forkLeft=id_-1,forkRight=id_==idCounter?0:id_;
 	std::unique_lock<std::mutex> uniqueLock(philosopherMutex_);
-	while(!this->end_)
+	while(!storage_->getEnd())
 	{
 		storage_->subscribe(std::bind(&Philosopher::trigger,this),{forkLeft,forkRight});
-		conditionVariable_.wait(uniqueLock,[]{return true;});
-		Launcher::Logger()->printQ("Philosopher: "+std::to_string(id_)+", Acquired food.");
+		conditionVariable_.wait(uniqueLock,[this]{return forksReady_;});
+		Launcher::Logger()->printQ(
+				"Philosopher: "
+				+std::to_string(id_)
+				+", Acquired food - Eating for: "
+				+std::to_string(eatDuration_.count())
+		);
+		std::this_thread::sleep_for(eatDuration_);
+		storage_->returnForks({forkLeft,forkRight});
 	}
 	Launcher::Logger()->printQ("Philosopher: "+std::to_string(id_)+", Is done for.");
 }
@@ -33,7 +39,7 @@ void Philosopher::run()
 
 void Philosopher::trigger()
 {
-	std::lock_guard<std::mutex> lockGuard(philosopherMutex_);
+	forksReady_=true;
 	Launcher::Logger()->printQ("Philosopher: "+std::to_string(id_)+", Acquired forks.");
 	conditionVariable_.notify_all();
 }

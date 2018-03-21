@@ -18,7 +18,7 @@ public:
 public:
 	inline void print(std::string const&message)
 	{
-		std::lock_guard lockGuard(inflowBufferQueueMutex_);
+		std::lock_guard<std::mutex> lockGuard(inflowBufferQueueMutex_);
 		inflowBufferQueue_.push(message);
 	}
 	inline void printQ(std::string const&message)

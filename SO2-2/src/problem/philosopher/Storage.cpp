@@ -13,11 +13,17 @@ Storage::Storage(unsigned long amount)
 	
 }
 
-void Storage::returnForks(std::pair<unsigned,unsigned> forksPair)
+void Storage::returnForks(std::pair<unsigned,unsigned> forkPair)
 {
 	std::lock_guard<std::mutex> lockGuard(forkVectorMutex_);
-	forkVector[forksPair.first].Available=true;
-	forkVector[forksPair.second].Available=true;
+	forkVector[forkPair.first].Available=true;
+	forkVector[forkPair.second].Available=true;
+
+	Launcher::Logger()->printQ("Forks returned: {"
+							   +std::to_string(forkPair.first)+","
+							   +std::to_string(forkPair.second)+"}."
+	);
+	scanSubscriptionList();
 }
 
 /// @brief scans subscription list for fork availability
@@ -25,6 +31,9 @@ void Storage::returnForks(std::pair<unsigned,unsigned> forksPair)
 /// @return if something changed true, otherwise false
 bool Storage::scanSubscriptionList()
 {
+	std::lock_guard<std::mutex> lockGuard(subscriptionVectorMutex_);
+	Launcher::Logger()->printQ("Scanning subscription list. Size:"+std::to_string(subscriptionList_.size()));
+
 	for(auto element=subscriptionList_.begin();
 		element!=subscriptionList_.end();
 		element++)
@@ -39,10 +48,31 @@ bool Storage::scanSubscriptionList()
 			subscriptionList_.erase(element--);
 		}
 	}
-	
+	Launcher::Logger()->printQ("Scan completed. Size:"+std::to_string(subscriptionList_.size()));
 }
 
 void Storage::subscribe(std::function<void()> trigger,std::pair<unsigned,unsigned> forksPair)
 {
+	std::lock_guard<std::mutex> lockGuard(subscriptionVectorMutex_);
 	subscriptionList_.emplace_back(trigger,forksPair);
+}
+
+bool Storage::getEnd() const
+{
+	return end_;
+}
+void Storage::setEnd(bool end)
+{
+	end_=end;
+}
+
+void Storage::runner()
+{
+	Launcher::Logger()->printQ("Starting the runner");
+	while(not (end_ && subscriptionList_.empty()))
+	{
+		scanSubscriptionList();
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	}
+	Launcher::Logger()->printQ("Stopping runner.");
 }

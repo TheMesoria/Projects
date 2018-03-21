@@ -14,7 +14,7 @@ FileOutput::~FileOutput()
 
 void FileOutput::update()
 {
-	std::lock_guard lockGuard(inflowBufferQueueMutex_);
+	std::lock_guard<std::mutex> lockGuard(inflowBufferQueueMutex_);
 	std::fstream file(path_, std::ios::app | std::ios::out);
 	
 	while(not inflowBufferQueue_.empty())
