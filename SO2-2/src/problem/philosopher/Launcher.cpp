@@ -19,7 +19,7 @@ void Launcher::start()
 	outputController->printQ("Preparing threads.");
 	prepareThreads();
 	outputController->printQ("60 000 milliseconds wait...");
-	std::this_thread::sleep_for(std::chrono::seconds(60));
+	std::this_thread::sleep_for(std::chrono::seconds(10));
 	outputController->printQ("Joining them...");
 	collectThreads();
 	outputController->printQ("All done!");
@@ -49,7 +49,7 @@ void Launcher::prepareThreads()
 	for(auto philosopher:storagePtr_->philosopherPtrVector_)
 		activeThreadVector_.emplace_back(std::bind(&Philosopher::run,philosopher));
 	activeThreadVector_.emplace_back(std::bind(&Storage::runner,storagePtr_));
-	activeThreadVector_.emplace_back(std::bind(&NCursesController::run,nCursesControllerPtr_));
+	//activeThreadVector_.emplace_back(std::bind(&NCursesController::run,nCursesControllerPtr_));
 }
 
 void Launcher::collectThreads()

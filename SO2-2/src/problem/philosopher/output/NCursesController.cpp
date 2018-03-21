@@ -19,7 +19,6 @@ void NCursesController::run()
 		{
 			mvprintw(base++,0,"Forks: "+philosopherPtr->forksReady_?"Ready":"Not Ready");
 		}
-		refresh();
 	}
 	Launcher::Logger()->printQ("NCurses Stopping...");
 	endwin();
