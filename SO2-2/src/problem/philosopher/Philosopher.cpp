@@ -8,7 +8,8 @@ Philosopher::Philosopher(const std::chrono::milliseconds &eatDuration,Storage *s
 		eatDuration_(eatDuration),
 		storage_(storage),
 		id_(++idCounter),
-		forksReady_(false)
+		forksReady_(false),
+		counter_(0)
 {}
 
 void Philosopher::execute()
@@ -26,6 +27,7 @@ void Philosopher::execute()
 				+std::to_string(eatDuration_.count())
 		);
 		std::this_thread::sleep_for(eatDuration_);
+		counter_++;
 		storage_->returnForks({forkLeft,forkRight});
 	}
 	Launcher::Logger()->printQ("Philosopher: "+std::to_string(id_)+", Is done for.");

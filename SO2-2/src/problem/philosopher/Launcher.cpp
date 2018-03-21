@@ -16,8 +16,8 @@ void Launcher::start()
 	outputController->printQ("READY.");
 	outputController->printQ("Preparing threads.");
 	prepareThreads();
-	outputController->printQ("300 milliseconds wait...");
-	std::this_thread::sleep_for(std::chrono::seconds(5));
+	outputController->printQ("60 000 milliseconds wait...");
+	std::this_thread::sleep_for(std::chrono::seconds(60));
 	outputController->printQ("Joining them...");
 	collectThreads();
 	outputController->printQ("All done!");
