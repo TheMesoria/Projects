@@ -18,7 +18,7 @@ ADD_EXECUTABLE(SO2
 			   include/OutputController.hpp
 			   include/FileOutput.hpp
 			   include/ArgumentReader.hpp
-			   )
+			   src/problem/philosopher/output/NCursesController.cpp include/NCursesController.hpp)
 
 FIND_PACKAGE(Curses REQUIRED)
 FIND_PACKAGE(Threads REQUIRED)

@@ -13,6 +13,7 @@
 class Launcher
 {
 	std::shared_ptr<Storage> storagePtr_;
+	std::shared_ptr<NCursesController> nCursesControllerPtr_;
 	static std::shared_ptr<OutputController> outputController;
 	
 	unsigned long amountOfPhilosophers_=5;

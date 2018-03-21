@@ -29,6 +29,7 @@ void Philosopher::execute()
 		std::this_thread::sleep_for(eatDuration_);
 		counter_++;
 		storage_->returnForks({forkLeft,forkRight});
+		forksReady_=false;
 	}
 	Launcher::Logger()->printQ("Philosopher: "+std::to_string(id_)+", Is done for.");
 }
@@ -44,4 +45,19 @@ void Philosopher::trigger()
 	forksReady_=true;
 	Launcher::Logger()->printQ("Philosopher: "+std::to_string(id_)+", Acquired forks.");
 	conditionVariable_.notify_all();
+}
+
+unsigned int Philosopher::getId() const
+{
+	return id_;
+}
+
+unsigned int Philosopher::getCounter() const
+{
+	return counter_;
+}
+
+bool Philosopher::isForksReady() const
+{
+	return forksReady_;
 }

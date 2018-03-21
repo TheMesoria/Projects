@@ -1,6 +1,7 @@
 #include <FileOutput.hpp>
 #include <Philosopher.hpp>
 #include <thread>
+#include <NCursesController.hpp>
 #include "Launcher.hpp"
 
 std::shared_ptr<OutputController> Launcher::outputController;
@@ -9,6 +10,7 @@ Launcher::Launcher(int argc,char **args)
 {
 	load({argc,args});
 	storagePtr_=std::make_shared<Storage>(amountOfPhilosophers_);
+	nCursesControllerPtr_=std::make_shared<NCursesController>(storagePtr_);
 }
 
 void Launcher::start()
@@ -47,6 +49,7 @@ void Launcher::prepareThreads()
 	for(auto philosopher:storagePtr_->philosopherPtrVector_)
 		activeThreadVector_.emplace_back(std::bind(&Philosopher::run,philosopher));
 	activeThreadVector_.emplace_back(std::bind(&Storage::runner,storagePtr_));
+	activeThreadVector_.emplace_back(std::bind(&NCursesController::run,nCursesControllerPtr_));
 }
 
 void Launcher::collectThreads()

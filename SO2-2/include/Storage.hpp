@@ -6,6 +6,7 @@
 #include <vector>
 #include <mutex>
 
+class NCursesController;
 class Launcher;
 
 class Philosopher;
@@ -44,6 +45,7 @@ private:
 	bool scanSubscriptionList();
 	
 	friend Launcher;
+	friend NCursesController;
 };
 
 

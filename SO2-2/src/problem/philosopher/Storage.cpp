@@ -9,7 +9,7 @@ Storage::Storage(unsigned long amount)
 	forkVector=std::vector<Fork>(amount);
 	philosopherPtrVector_=std::vector<std::shared_ptr<Philosopher>>();
 	for(auto i=0u;i<amount;i++)
-		philosopherPtrVector_.emplace_back(new Philosopher(std::chrono::milliseconds(500),this));
+		philosopherPtrVector_.emplace_back(new Philosopher(std::chrono::milliseconds(2000),this));
 	
 }
 
@@ -23,7 +23,7 @@ void Storage::returnForks(std::pair<unsigned,unsigned> forkPair)
 							   +std::to_string(forkPair.first)+","
 							   +std::to_string(forkPair.second)+"}."
 	);
-	scanSubscriptionList();
+	//scanSubscriptionList();
 }
 
 /// @brief scans subscription list for fork availability
@@ -69,7 +69,12 @@ void Storage::setEnd(bool end)
 void Storage::runner()
 {
 	Launcher::Logger()->printQ("Starting the runner");
-	std::this_thread::sleep_for(std::chrono::milliseconds(100));
-	scanSubscriptionList();
+	
+	while(!(end_ && subscriptionList_.empty()))
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		scanSubscriptionList();
+	}
+	
 	Launcher::Logger()->printQ("Stopping runner.");
 }

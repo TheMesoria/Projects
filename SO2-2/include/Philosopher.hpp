@@ -7,7 +7,6 @@
 /// @brief Template of Philosopher
 class Philosopher
 {
-	friend Launcher;
 	static unsigned idCounter;
 	unsigned id_;
 	unsigned counter_;
@@ -25,7 +24,14 @@ public:
 	Philosopher(const std::chrono::milliseconds &eatDuration, Storage *storage);
 	~Philosopher(){Launcher::Logger()->printQ("Id: "+std::to_string(id_)+", Amount: "+std::to_string(counter_));}
 	void run();
-	void execute();
+	
+	unsigned int getId() const;
+	unsigned int getCounter() const;
+	bool isForksReady() const;
 private:
+	void execute();
 	void trigger();
+	
+	friend Launcher;
+	friend NCursesController;
 };
